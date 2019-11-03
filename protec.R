@@ -1,7 +1,6 @@
 library(tidyverse)
 library(readxl)
 library(lubridate)
-setwd("~/Documents/R_projects/Finanzas/")
 rm(list = ls())
 paths <- list.files("proteccion", full.names = T)
 dfx <- read_excel(paths[1])

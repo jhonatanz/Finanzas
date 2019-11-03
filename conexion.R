@@ -4,9 +4,8 @@ library(xml2)
 library(tidyverse)
 library(readxl)
 library(lubridate)
-setwd("~/Documents/R_projects/Finanzas/")
 rm(list = ls())
-system("wget --no-check-certificate https://www.bvc.com.co/pps/tibco/portalbvc/Home/Mercados/enlinea/acciones?action=dummy -O page.html
+  system("wget --no-check-certificate https://www.bvc.com.co/pps/tibco/portalbvc/Home/Mercados/enlinea/acciones?action=dummy -O page.html
 ")
 xml_file <- read_html("page.html")
 #crea el node_set de las todas las paginas del documento
