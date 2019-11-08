@@ -112,3 +112,4 @@ prop_s <- rent_s/risk_s
 hist(tabla_rent$prom_renta_d, breaks = 10, probability = TRUE)
 hist(tabla_rent_s$prom_renta_d, breaks = 10, probability = TRUE)
 sd(tabla_rent$prom_renta_d)
+  

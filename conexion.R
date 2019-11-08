@@ -7,9 +7,9 @@ library(lubridate)
 rm(list = ls())
   system("wget --no-check-certificate https://www.bvc.com.co/pps/tibco/portalbvc/Home/Mercados/enlinea/acciones?action=dummy -O page.html
 ")
-xml_file <- read_html("page.html")
+xml_file <- read_html("page.html") #revisar, esto podriamos hacerlo directamente sin wget??
 #crea el node_set de las todas las paginas del documento
-a <- xml_find_all(xml_file, "//a")
+a <- xml_find_all(xml_file, "//a") #revisar si es posible mejorar la busqueda para obtener la lista directamente
 #construct a character matrix with the elements <a from the html
 b <- cbind(xml_text(a), xml_attr(a, "href"), xml_attr(a, "onclick"))
 b <- gsub(" ", "", b)
@@ -77,13 +77,15 @@ system("mv *.xls files")
 #system("rename 's/\\&tipoMercado\\=1\\&fechaIni\\=2018-09-27\\&fechaFin\\=2019-03-11/.xls/g' *")
 #system("find . -name \"*.xls.1\" -type f -delete")
 paths <- list.files("files", full.names = T)
-df3 <- read_excel(paths[1])
-for(j in 2:length(paths)){
-  e <- read_excel(paths[j])
-  df3 <- rbind(df3, e)
+str(paths)
+names(paths)<-c("path")
+df3 <- data.frame(stringsAsFactors = F)
+for(path in paths){
+  try(e <- read_excel(path))
+  try(df3 <- rbind(df3, e))
 }
-df4 <- dbGetQuery(con, "SELECT * FROM valores WHERE Nemotecnico = \"ECOPETROL\"")
-names(df3) <- names(df4)[2:length(names(df4))]
+namesdf3 <- names(dbGetQuery(con, "SELECT * FROM valores WHERE Nemotecnico = \"ECOPETROL\""))
+names(df3) <- namesdf3[2:length(namesdf3)]
 dbWriteTable(conn = con, name = "valores", value = df3, append = TRUE, row.names = FALSE)
 dbDisconnect(con)
 system("rm page.html listurl")
